@@ -1,0 +1,183 @@
+[gd_scene format=3 uid="uid://bpj3eacx5mx3v"]
+
+[ext_resource type="Texture2D" uid="uid://ci3ptpkj1r8c0" path="res://assets/brackeys_platformer_assets/sprites/New Piskel (8).png" id="1_3wnur"]
+[ext_resource type="Texture2D" uid="uid://hunu8phrcqxk" path="res://New Piskel (2).png" id="1_a6wkj"]
+[ext_resource type="Texture2D" uid="uid://ci3km8l45b47s" path="res://New Piskel (3).png" id="2_6i4rs"]
+
+[sub_resource type="GDScript" id="GDScript_oshh3"]
+script/source = "extends CharacterBody2D
+
+const GAME_OVER = preload(\"res://game_over_screen.tscn\")
+var dead := false
+
+const SPEED = 150.0
+const JUMP_VELOCITY = -400.0
+@onready var bounce_knight_anim: AnimatedSprite2D = $BounceKnight_Anim
+
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Handle jump.
+	if Input.is_action_just_pressed(\"jump\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+		bounce_knight_anim.play(\"jump\")
+	
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction := Input.get_axis(\"move_left\", \"move_right\")
+	
+	if direction > 0:
+		bounce_knight_anim.flip_h = false
+		bounce_knight_anim.play(\"idle\")
+	if direction < 0:
+		bounce_knight_anim.flip_h = true
+		bounce_knight_anim.play(\"idle\")
+	
+	if direction:
+		velocity.x = direction * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+
+	move_and_slide()
+	
+func _ready() -> void:
+	add_to_group(\"player\")
+
+func die() -> void:
+	if dead:
+		return
+	dead = true
+	set_physics_process(false)
+	get_tree().current_scene.add_child(GAME_OVER.instantiate())
+	await get_tree().create_timer(2.0).timeout
+	get_tree().reload_current_scene()
+
+func bounce() -> void:
+	velocity.y = JUMP_VELOCITY * 0.7
+	
+	
+	
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l2pqv"]
+atlas = ExtResource("1_3wnur")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y26ky"]
+atlas = ExtResource("1_3wnur")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7e81t"]
+atlas = ExtResource("1_3wnur")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdmos"]
+atlas = ExtResource("1_3wnur")
+region = Rect2(150, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yl56c"]
+atlas = ExtResource("1_3wnur")
+region = Rect2(200, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aj68a"]
+atlas = ExtResource("1_3wnur")
+region = Rect2(250, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6wkj"]
+atlas = ExtResource("1_a6wkj")
+region = Rect2(0, 0, 50, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6i4rs"]
+atlas = ExtResource("1_a6wkj")
+region = Rect2(50, 0, 50, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3wnur"]
+atlas = ExtResource("1_a6wkj")
+region = Rect2(100, 0, 50, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qa5i6"]
+atlas = ExtResource("2_6i4rs")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ps6jl"]
+atlas = ExtResource("2_6i4rs")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8vq0x"]
+atlas = ExtResource("2_6i4rs")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aw8hd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l2pqv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y26ky")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7e81t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rdmos")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yl56c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aj68a")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6wkj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6i4rs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3wnur")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qa5i6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ps6jl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8vq0x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qa5i6")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8na5j"]
+radius = 9.0
+
+[node name="BounceKnight_Char" type="CharacterBody2D" unique_id=1035394549]
+collision_layer = 3
+script = SubResource("GDScript_oshh3")
+
+[node name="BounceKnight_Anim" type="AnimatedSprite2D" parent="." unique_id=187352056]
+sprite_frames = SubResource("SpriteFrames_aw8hd")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=278259310]
+position = Vector2(-8, -1)
+shape = SubResource("CircleShape2D_8na5j")

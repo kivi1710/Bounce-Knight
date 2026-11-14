@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dld00e2a7oyus"]
+
+[sub_resource type="GDScript" id="GDScript_oshh3"]
+script/source = "extends CanvasLayer
+
+@onready var coin_label: Label = $CoinLabel
+@onready var win_label: Label = $WinLabel
+
+func _ready() -> void:
+	win_label.hide()
+
+func update_coins(count: int, needed: int) -> void:
+	coin_label.text = \"Coins: %d / %d\" % [count, needed]
+
+func show_win() -> void:
+	win_label.show()
+	await get_tree().create_timer(3.0).timeout
+	get_tree().reload_current_scene()
+"
+
+[node name="HUD" type="CanvasLayer" unique_id=982117849]
+script = SubResource("GDScript_oshh3")
+
+[node name="Coin label" type="Label" parent="." unique_id=2079055031]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 16
+text = "coins collected : 0/16"
+
+[node name="win label" type="Label" parent="." unique_id=218103735]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.5
+offset_top = -11.5
+offset_right = 66.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "LEVEL COMPLETE"

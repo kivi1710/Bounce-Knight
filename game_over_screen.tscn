@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dn17ekfo56v45"]
+
+[ext_resource type="Texture2D" uid="uid://c4h8urjb7f2pv" path="res://New Piskel (4).png" id="1_gt22q"]
+[ext_resource type="Texture2D" uid="uid://cmmhr0yrxyw6m" path="res://New Piskel (5).png" id="2_w3hxg"]
+
+[node name="GameOverScreen" type="CanvasLayer" unique_id=1809051795]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=6970023]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -23.0
+offset_top = -30.0
+offset_right = 22.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1663743, 0.1663743, 0.1663743, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=191988079]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -278.0
+offset_top = -76.0
+offset_right = 298.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer" unique_id=1787285937]
+texture_filter = 1
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+texture = ExtResource("1_gt22q")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer" unique_id=715615523]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+texture = ExtResource("2_w3hxg")

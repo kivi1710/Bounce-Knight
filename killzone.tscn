@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://ljyvoi7aj3u2"]
+
+[sub_resource type="GDScript" id="GDScript_n74wa"]
+resource_name = "killzone"
+script/source = "extends Area2D
+
+const GAME_OVER = preload(\"res://game_over_screen.tscn\")
+
+@onready var timer: Timer = $Timer
+
+func _on_body_entered(body: Node2D) -> void:
+	print(\"you died\", body.name)
+	get_tree().current_scene.add_child(GAME_OVER.instantiate())
+	timer.start()
+
+func _on_timer_timeout() -> void:
+	get_tree().reload_current_scene()
+"
+
+[node name="Killzone" type="Area2D" unique_id=93406767]
+collision_layer = 2
+script = SubResource("GDScript_n74wa")
+
+[node name="Timer" type="Timer" parent="." unique_id=392847906]
+wait_time = 1.5
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
